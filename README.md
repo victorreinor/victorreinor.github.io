@@ -1,0 +1,2 @@
+# Site pessoal Victor Reinor
+Site de portfólio, la vai estar listado os ultimos repositorios atualizados, quais tecnologias que são do meu interesse, blog com ajuda e informações sobre tecnologia e biografia.
