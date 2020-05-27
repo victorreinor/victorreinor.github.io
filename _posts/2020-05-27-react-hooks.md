@@ -2,8 +2,7 @@
 title: "O que é React?"
 published: true
 ---
-# O que é React?
-**Biblioteca** para construções de **interfaces**;
+**Biblioteca** para construções de **interfaces**.
 Tudo que o usuário enxergar **Layout** (html, css, javascript).
 
 Utilizado para construção **SPA** (Single-Page-Applications), um conceito que veio junto com **Angular** no começo de 2011, este conceito é uma forma de você construir aplicações no front-end. Antes do conceito **SPA** nos tinhamos o back-end e para cada rota ele retornava todo o conteudo html montado, um exemplo é o **PHP** aonde era digitado todo código html, as querys do banco de dados e javascript (Ficava uma mistureira só 🤢🤢). Hoje em dia ficou mais fácil, fazemos aplicações separadas que chamamos de **front-end** e **back-end**, no front-end consumimos o back-end por via **URL'S HTTP** e montamos todo nosso layout com base em dados **JSON**.
