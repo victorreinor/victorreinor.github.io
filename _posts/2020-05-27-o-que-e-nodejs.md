@@ -92,3 +92,4 @@ https://docs.npmjs.com/
 #### Obs: Estamos utilizando o node sem pacotes nenhum, existe N maneiras de criar um servidor web como por exemplo com o pacote Express que em poucas linhas criamos um servidor web com muita mais funcoes e muito mais eficaz
 
 ###### fonte: [Link 1](https://tableless.com.br/o-que-nodejs-primeiros-passos-com-node-js/ "Link 1"), [Link 2](https://medium.com/thdesenvolvedores/node-js-o-que-%C3%A9-por-que-usar-e-primeiros-passos-1118f771b889 "Link 2"), [Link 3](https://pt.stackoverflow.com/questions/149296/pra-que-server-o-expressjs "Link 3")
+
