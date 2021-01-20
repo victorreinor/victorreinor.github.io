@@ -1,32 +1,116 @@
 ---
-title: "O que é React?"
+title: "O que é React hooks?"
 published: true
 ---
-**Biblioteca** para construções de **interfaces**.
-Tudo que o usuário enxergar **Layout** (html, css, javascript).
+A partir da versão 16.8 foi adicionado a API de hooks, esses hooks estão sendo muitos utilizados no react pois reduzem muito a verbosidade de muitas formas que a gente tinha antes no react para compartilhamento de informações entre componentes e também reduzem a verbosidade em bibiliotecas ex: Redux
 
-Utilizado para construção **SPA** (Single-Page-Applications), um conceito que veio junto com **Angular** no começo de 2011, este conceito é uma forma de você construir aplicações no front-end. Antes do conceito **SPA** nos tinhamos o back-end e para cada rota ele retornava todo o conteudo html montado, um exemplo é o **PHP** aonde era digitado todo código html, as querys do banco de dados e javascript (Ficava uma mistureira só 🤢🤢). Hoje em dia ficou mais fácil, fazemos aplicações separadas que chamamos de **front-end** e **back-end**, no front-end consumimos o back-end por via **URL'S HTTP** e montamos todo nosso layout com base em dados **JSON**.
+### useState
+---
+É o hook que vai pertencer a uma função para gente criar estados na função sem escrever ela no formato de classe
 
-React é um **framework**?
-Sim, só o **React** e uma **LIB** (Biblioteca) mas quando analisamos o ecossistema inteiro do React podemos chamar de Framework pois tudo que vem crescendo em volta do React fez com que muitas coisas fosse usadas em conjuntos não somente uma simples LIB de interfaces, um exemplo e o **JSX**.
+Exemplo 1:
+```javascript
+  const [tech, setTech] = useState(['ReactJS', 'React Native']);
+```
 
-React/ReactJs/React-Native
+Definimos uma constante fazendo **destructuring** e como argumento para o **useState** passamos o valor inicial do estado.
 
-**React**: É a biblioteca de construção de interfaces e componentização que é utilizada tanto no **REACTJS** quanto no **REACT-NATIVE**.
+O useState retorna um array por isso fazemos destructuring, na primeira posição retorna o estado e na segunda uma função que servirá para atualizar as informações do estado.
 
-**ReactJS**: ReactJS diretamente no browser, usamos a biblioteca **react-dom** para manipulação da arvore de elementos do **browser**
+Então toda vez que quiser evoluir o estado será utilizado o segundo parametro como no exemplo a seguir.
 
-**React-Native**: Para desenvolvimentos de aplicativos nativos **android** e **ios**, que usa biblioteca que lida com elementos nativos de cada plataforma.
+Exemplo 2:
+```javascript
+  const [tech, setTech] = useState(['ReactJS', 'React Native']);
 
-O melhor de tudo é que tudo é **JAVASCRIPT** 🚀🚀.
+  function handleAdd() {
+    setTech([...tech, 'NodeJS']);
+  }
 
-## Vantagens
-- **Componentização**
-  - Consiste em dividir parte do nosso código em componentes que tem funcionalidades especificas (Vejamos a imagem abaixo);
-  - Vemos o **CommentForm** ele basicamente um formulário para adicionar comentarios, qualquer tela que quisermos chamar este formulário é so instanciar o componente e colocar na tela e assim por diante;
-[![React Component Tree](https://raw.githubusercontent.com/victorreinor/o-que-e-react/master/react-component-tree.webp "React Component Tree")](https://raw.githubusercontent.com/victorreinor/o-que-e-react/master/react-component-tree.webp "React Component Tree")
-  - **Quando componentizar?** Componentização acontece quando conseguimos isolar a logica do componente de forma que não afetara o restante da aplicação.
-- **Divisão de responsabilidades**
-  - Deixamos o front-end somente para interfaces e nosso back-end cuidando da nossa regra de negocio, por exemplo um carrinho de compras quando adicionamos um cupom de desconto, calculamos os descontos no nosso back-end para nao ter nenhuma interferencia do front-end
-- **API e Vários clientes**
-  - Criamos somente uma api e podemos criar diversas aplicações para consumir a mesma pois temos um servidor servindo os dados.
+  return <button type="button" onClick={handleAdd}>Adicionar</button>
+```
+
+### useEffect
+---
+Ele sobrepõe os métodos do ciclo de vida dos componentes **componentDidMount, componentDidUpdate, componentWillUnmount**
+
+Exemplo 1: componentDidUpdate
+```javascript
+  useEffect(() => {
+    localStorage.setItem('tech', JSON.stringify(tech));
+  }, [tech]);
+```
+
+Primeiro parâmetro que o **useEffect** recebe é uma função que será executada e o segundo e quando ela vai ser executado, ou seja, o segundo parâmetro é um array de dependencias, ele fica monitorando alterações em certas variáveis, nesse caso do exemplo a cima deixamos ele monitorando a variavel **tech** e caso aja alguma alteração ele inclui no localStorage do browser
+
+Exemplo 2: componentDidUpdate
+```javascript
+  useEffect(() => {
+    const storageTech = localStorage.getItem('tech');
+
+    if (storageTech) setTech(JSON.parse(storageTech));
+  }, []);
+```
+
+No exemplo acima deixamos o segundo parâmetro vazio pois queremos que ele só executa quando o componente montar e recuperamos todas as informações já salvas no localStorage, fazendo assim o papel do **componentDidMount**
+
+Exemplo 3: componentWillUnmount
+```javascript
+  useEffect(() => {
+    return () => {
+      /*
+        bloco de código
+      */
+    };
+  }, []);
+```
+
+Para fazer o papel do **componentWillUnmount** precisamos só de colocar um return com uma função como monstra o exemplo a cima.
+
+### useMemo
+---
+Exemplo de introdução:
+```javascript
+  return <strong>Você tem {tech.length} tecnologias</strong>
+```
+No exemplo acima, acessamos o tamanho do array com a função **length**..
+
+O problema deste código é que ele renderiza toda vez que o **return** é chamado, ele é chamado sempre que qualquer tipo de **variável** que está sendo utlizada no componente é alterada, toda vez que inserirmos um valor dentro de um input controlado e etc... Por mais que um **.length** seja simples o **useMemo** é indicado para este tipo de ocasiões, no caso do nosso exemplo é muito simples mas varia de caso a caso, pode acontecer de ter um calculo muito mais complexo que chama outras funções e que podera afetar a performance caso seja muito complexo.
+
+Exemplo 2:
+```javascript
+  const techSize = useMemo(() => tech.length, [tech]);
+
+  return <strong>Você tem {techSize} tecnologias</strong>
+```
+
+No exemplo acima criamos uma variável para receber nossa função, no primeiro parâmetro passamos uma função e dentro desta função inserimos nosso bloco de código, e como de costume o segundo parâmetro passamos uma variável para ele ficar monitorando assim toda vez que houver alguma mudança nesta variável a função será executada e exibirá na tela o retorno da função
+
+### useCallback
+---
+Na explição do hook **useState** no **Exemplo 2** criamos uma função chamada **handleAdd** ela é uma **function** que está sendo definida dentro de outra **function**, como ele esta declarada junto com os hooks ela sempre será montada toda vez que as variáveis do componente é alterada.
+Exemplo: se eu adicionar alguma informação em algum array, digitar em um input controlado entre outros... ela sempre será criada novamente do zero, então isso acaba gastando **processamento do javascript** pois o javascript terá que apagar da memória e criar uma nova locação para criar ela novamente, no caso do nosso exemplo é uma função muito simples mas muitos casos pode acontecer de ser códigos mais complexos.
+
+Exemplo 1:
+```javascript
+  const handleAdd = useCallback(() => {
+    setTech([...tech, newTech]);
+    setNewTech('');
+  }, [newTech, tech]);
+```
+
+No exemplo acima, passamos de primeiro parâmetro uma função e dentro desta função inserimos o nosso bloco de código que será executado, no segundo parâmetro passamos as variáveis que o nosso bloco de código deverá ficar monitorando, ou seja, toda vez que tiver alguma alteração nas variáveis **newTech** e **tech** será executado o nosso trecho de código.
+
+## Passo-a-passo para rodar a aplicação
+
+### `https://github.com/victorreinor/react-hooks`
+Clona o repositorio do projeto;
+
+### `cd react-hooks`
+Entra dentro da pasta do projeto;
+
+### `yarn install`
+Baixa as dependencias que são utilizadas no projeto;
+
+### `code . && yarn start`
+Abre o projeto com vscode e inicia a aplicação;
